@@ -19,7 +19,6 @@ class KetQuaKiem:
 
 def cl1_dien_thoai_hop_le(df, nguong=0.10):
     """Kiểm tra số lượng SĐT bị sai định dạng (không thể chuẩn hóa được)."""
-    # Lỗi khi: SĐT chuẩn bị NaN nhưng SĐT gốc có dữ liệu
     loi = df['sdt_chuan'].isna() & df['so_dien_thoai'].notna() & (df['so_dien_thoai'].astype(str).str.strip() != '')
     return KetQuaKiem('CL1', 'Số điện thoại chuẩn hoá được', len(df), int(loi.sum()), nguong)
 
@@ -40,5 +39,5 @@ def cl4_khoa_khong_trung(df, nguong=0.0):
 
 def cl5_khoa_ngoai_ton_tai(df_items, df_orders, nguong=0.0):
     """Kiểm tra tính toàn vẹn: Dòng chi tiết đơn hàng phải trỏ về một đơn hàng có thật."""
-    hop_le = df_items['order_id'].isin(df_orders['order_id'])
+    hop_le = df_items['order_id'].astype(str).isin(df_orders['order_id'].astype(str))
     return KetQuaKiem('CL5', 'Mỗi dòng hàng trỏ về một đơn hàng có thật', len(df_items), int((~hop_le).sum()), nguong)

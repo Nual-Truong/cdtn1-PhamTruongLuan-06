@@ -1,6 +1,6 @@
 {
     "batch_id": "lo-toan-bo",
-    "thoi_gian": "2026-10-22T16:09:41.885751",
+    "thoi_gian": "2026-10-26T12:32:40.069754",
     "tong_so_dong_vao": 128734,
     "so_dong_sach": 128100,
     "so_dong_reject": 634,
@@ -45,8 +45,8 @@
             "ma": "CL5",
             "ten": "Mỗi dòng hàng trỏ về một đơn hàng có thật",
             "so_dong_kiem": 35177,
-            "so_dong_loi": 35177,
-            "ti_le_loi": 100.0,
+            "so_dong_loi": 153,
+            "ti_le_loi": 0.43,
             "nguong_cho_phep": 0.0,
             "ket_luan": "KHÔNG ĐẠT"
         }
