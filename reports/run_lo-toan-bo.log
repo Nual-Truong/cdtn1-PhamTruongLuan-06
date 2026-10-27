@@ -168,3 +168,27 @@
 2026-10-26 12:58:52,778 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
 2026-10-26 12:58:52,778 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
 2026-10-26 12:58:52,778 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-26 13:17:17,195 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-26 13:17:17,221 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-26 13:17:17,254 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-26 13:17:17,278 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-26 13:17:17,287 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-26 13:17:21,673 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-26 13:17:21,673 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-26 13:17:21,674 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-27 20:58:11,168 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-27 20:58:11,415 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-27 20:58:11,549 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-27 20:58:11,585 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-27 20:58:11,614 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-27 20:58:20,766 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-27 20:58:20,767 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-27 20:58:20,767 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-27 20:59:27,318 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-27 20:59:27,341 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-27 20:59:27,366 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-27 20:59:27,371 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-27 20:59:27,373 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-27 20:59:31,440 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-27 20:59:31,441 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-27 20:59:31,441 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
