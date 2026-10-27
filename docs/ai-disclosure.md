@@ -1,14 +1,12 @@
-# BẢNG KHAI BÁO SỬ DỤNG CÔNG CỤ AI
-*Bài tập 1 - Chuyên đề tốt nghiệp 1*
+# Khai báo Sử dụng Công cụ AI (AI Disclosure)
 
-Tôi cam kết đã sử dụng công cụ AI một cách có trách nhiệm trong quá trình làm bài, tuân thủ nguyên tắc minh bạch học thuật.
+Dự án tuân thủ quy định về liêm chính học thuật của Khoa Công nghệ Thông tin - Trường Đại học Văn Lang. Dưới đây là bảng kê khai chi tiết việc sử dụng công cụ AI hỗ trợ trong quá trình thực hiện Bài tập 2:
 
-**1. Tên công cụ sử dụng:** Gemini (Google).
-**2. Mục đích sử dụng:**
-* Hỗ trợ tự động hóa việc tạo mã PlantUML để vẽ sơ đồ Use Case, Architecture và ERD nhằm tiết kiệm thời gian căn chỉnh hình khối.
-* Sinh hình ảnh phác thảo giao diện (Wireframe) Dashboard báo cáo bằng Python matplotlib dựa trên cấu trúc tự thiết kế.
-* Hỗ trợ kiểm tra (peer-review độc lập) tính nhất quán của thuật ngữ giữa văn bản SRS và các sơ đồ.
-**3. Phần do tôi tự thực hiện:**
-* Định nghĩa nghiệp vụ (Track DA - Kho dữ liệu bán hàng Mekong Mobile).
-* Chốt các quyết định kiến trúc, lựa chọn Lược đồ hình sao (Star Schema), xử lý SCD Loại 2.
-* Đặt ra các ngưỡng hiệu năng NFR và viết luồng ngoại lệ Given-When-Then.
+| STT | Công cụ AI sử dụng | Mục đích / Việc đã dùng                                                                                                                       | Tệp hoặc Hàm áp dụng                                         | Cách sinh viên tự kiểm chứng và làm chủ mã nguồn                                                                                                                                       |
+| :-: | :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|  1  | Gemini / ChatGPT   | Tham khảo cú pháp Window Function `LAG()` trong SQLite để tính doanh thu 2 tháng liền trước (US2) và tính tỷ lệ khách quay lại (US4).         | `dashboard/app.py` (biến `sql_canh_bao`, `sql_retention`)    | Tự chạy truy vấn độc lập trên dữ liệu mẫu, kiểm tra từng cột `thang_truoc_1`, `thang_truoc_2` và đối chiếu thủ công với bảng `fact_sales` để xác nhận logic `N < N-1 < N-2` chính xác. |
+|  2  | Gemini / ChatGPT   | Hỗ trợ viết biểu thức chính quy (Regex) chuẩn hóa số điện thoại Việt Nam về 10 chữ số và gợi ý cấu trúc các trường hợp kiểm thử biên.         | `src/transform/clean_customers.py`, `tests/test_pipeline.py` | Chạy `pytest -v` với đầy đủ 3 nhóm dữ liệu (luồng đúng, biên, dữ liệu sai như SĐT chứa chữ, đầu số `+84`, thiếu số) và giải thích được từng bước biến đổi chuỗi.                       |
+|  3  | Gemini / ChatGPT   | Gợi ý cách trình bày biểu đồ kết hợp đường tham chiếu trung bình (Altair `mark_rule`) và xử lý ngoại lệ hiển thị 3 trạng thái trên Streamlit. | `dashboard/app.py`                                           | Tự tinh chỉnh tên cột, màu sắc và thực hiện kiểm thử thực tế cả 3 trạng thái: có dữ liệu, lọc khoảng ngày rỗng (2020) và đổi tên file DB để kiểm tra trạng thái lỗi kết nối.           |
+|  4  | Gemini / ChatGPT   | Rà soát văn phong và định dạng Markdown cho tài liệu hướng dẫn cài đặt đa nền tảng (Windows CMD, PowerShell, Linux/macOS).                    | `README.md`, `docs/deployment-guide.md`                      | Tự chạy lại toàn bộ chuỗi lệnh cài đặt và khởi chạy một lần trên Windows PowerShell từ thư mục gốc để xác nhận lệnh hoạt động chính xác.                                               |
+
+**Cam kết của sinh viên:** Toàn bộ mã nguồn trong dự án đều do tôi trực tiếp rà soát, tích hợp, chạy kiểm thử và hiểu rõ nguyên lý hoạt động của từng hàm, sẵn sàng giải thích trực tiếp tại buổi bảo vệ.
