@@ -192,3 +192,67 @@
 2026-10-27 20:59:31,440 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
 2026-10-27 20:59:31,441 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
 2026-10-27 20:59:31,441 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-29 16:35:59,972 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-29 16:36:00,135 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-29 16:36:00,185 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-29 16:36:00,189 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-29 16:36:00,189 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-29 16:36:04,186 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-29 16:36:04,187 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-29 16:36:04,187 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-29 16:53:52,627 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-29 16:53:52,674 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-29 16:53:52,704 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-29 16:53:52,709 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-29 16:53:52,711 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-29 16:53:57,809 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-29 16:53:57,810 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-29 16:53:57,810 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-29 16:55:32,884 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-29 16:55:32,901 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-29 16:55:32,922 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-29 16:55:32,926 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-29 16:55:32,927 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-29 16:55:36,444 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-29 16:55:36,444 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-29 16:55:36,444 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-29 16:56:07,943 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-29 16:56:07,976 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-29 16:56:08,001 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-29 16:56:08,006 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-29 16:56:08,008 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-29 16:56:13,083 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-29 16:56:13,084 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-29 16:56:13,084 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-29 16:57:54,568 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-29 16:57:54,604 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-29 16:57:54,634 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-29 16:57:54,639 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-29 16:57:54,640 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-29 16:57:58,932 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-29 16:57:58,932 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-29 16:57:58,933 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-29 16:58:30,197 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-29 16:58:30,229 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-29 16:58:30,268 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-29 16:58:30,277 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-29 16:58:30,280 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-29 16:58:42,120 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-29 16:58:42,120 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-29 16:58:42,120 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-29 17:00:33,263 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-29 17:00:33,332 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-29 17:00:33,360 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-29 17:00:33,373 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-29 17:00:33,391 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-29 17:00:40,625 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-29 17:00:40,626 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-29 17:00:40,626 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-10-29 17:02:34,153 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-10-29 17:02:34,207 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-10-29 17:02:34,229 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-10-29 17:02:34,241 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-10-29 17:02:34,260 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-10-29 17:02:41,562 [INFO] Staging & Reject: Đã lưu 634 dòng lỗi vào reject_rows.
+2026-10-29 17:02:41,562 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 55385, 'fact_sales': 34973}
+2026-10-29 17:02:41,563 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===

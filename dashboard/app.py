@@ -71,6 +71,14 @@ def tao_loc_tinh(cot_thanh_pho: str, danh_sach_tinh: list):
     return f" AND {cot_thanh_pho} IN ({', '.join(placeholders)})", params
 
 
+def hien_loi_ket_noi(thong_bao: str, khoa_thu_lai: str):
+    st.error(thong_bao)
+    if st.button("🔄 Thử lại", key=khoa_thu_lai):
+        doc_du_lieu.clear()
+        lay_engine.clear()
+        st.rerun()
+
+
 # =========================================================
 # 3. BỘ LỌC DÙNG CHUNG
 # =========================================================
@@ -87,10 +95,12 @@ try:
         ORDER BY thanh_pho
         """
     )["thanh_pho"].dropna().tolist()
-except Exception as e:
-    st.error("Không thể tải danh sách tỉnh/thành phố. Vui lòng kiểm tra kết nối kho dữ liệu.")
-    with st.expander("Xem chi tiết kỹ thuật"):
-        st.code(f"{type(e).__name__}: {e}")
+except Exception:
+    hien_loi_ket_noi(
+        "Chưa thể kết nối tới kho dữ liệu để tải danh sách tỉnh/thành phố. "
+        "Vui lòng thử lại.",
+        "thu_lai_danh_sach_tinh",
+    )
     st.stop()
 
 tu_ngay = st.sidebar.date_input("Từ ngày", value=pd.Timestamp("2024-01-01").date())
@@ -182,13 +192,12 @@ with st.spinner("Đang tổng hợp dữ liệu kinh doanh..."):
         """
         df_retention = doc_du_lieu(sql_retention, tham_ngay)
 
-    except Exception as e:
-        st.error(
-            "Không thể tải báo cáo kinh doanh. Có thể kho dữ liệu chưa sẵn sàng "
-            "hoặc cấu trúc bảng/cột chưa khớp với truy vấn."
+    except Exception:
+        hien_loi_ket_noi(
+            "Chưa thể tải báo cáo kinh doanh do kết nối kho dữ liệu gặp sự cố. "
+            "Vui lòng thử lại.",
+            "thu_lai_bao_cao_kinh_doanh",
         )
-        with st.expander("Xem chi tiết kỹ thuật"):
-            st.code(f"{type(e).__name__}: {e}")
         st.stop()
 
 
@@ -374,13 +383,12 @@ try:
         )
     else:
         st.success("Không phát hiện cửa hàng giảm doanh thu 3 tháng liên tiếp.")
-except Exception as e:
-    st.error(
-        "Chưa thể tạo báo cáo cảnh báo doanh thu. "
-        "Vui lòng kiểm tra dữ liệu ngày tháng và khả năng hỗ trợ hàm phân tích của SQLite."
+except Exception:
+    hien_loi_ket_noi(
+        "Chưa thể tải cảnh báo doanh thu do kết nối kho dữ liệu gặp sự cố. "
+        "Vui lòng thử lại.",
+        "thu_lai_canh_bao_doanh_thu",
     )
-    with st.expander("Xem chi tiết kỹ thuật"):
-        st.code(f"{type(e).__name__}: {e}")
 
 
 # =========================================================
@@ -435,10 +443,10 @@ DANH_MUC_LOI = [
 # Các hộp có mũi tên đóng/mở. Có thể thêm CL6, CL7... trong DANH_MUC_LOI.
 with st.expander("📚 Từ điển mã lỗi – nhấn để mở rộng/thu gọn", expanded=False):
     for loi in DANH_MUC_LOI:
-        with st.expander(f"{loi['ma']}  |  {loi['ten']}", expanded=False):
-            st.markdown(f"**Mô tả:** {loi['mo_ta']}")
-            st.markdown(f"**Cần kiểm tra:** {loi['kiem_tra']}")
-            st.markdown(f"**Hướng xử lý đề xuất:** {loi['xu_ly']}")
+        st.markdown(f"#### {loi['ma']}  |  {loi['ten']}")
+        st.markdown(f"**Mô tả:** {loi['mo_ta']}")
+        st.markdown(f"**Cần kiểm tra:** {loi['kiem_tra']}")
+        st.markdown(f"**Hướng xử lý đề xuất:** {loi['xu_ly']}")
 
 col_filter, col_data = st.columns([1, 2.6], gap="large")
 
@@ -497,14 +505,12 @@ with col_data:
                 f"Không tìm thấy bản ghi thuộc nhóm **{ma_loi_chon}** "
                 "trong danh sách đang truy vấn."
             )
-    except Exception as e:
-        st.error(
-            "Không tải được nhật ký dữ liệu lỗi (Reject Log). "
-            "Có thể bảng reject_rows chưa tồn tại, thiếu cột cần thiết "
-            "hoặc kết nối kho dữ liệu gặp sự cố."
+    except Exception:
+        hien_loi_ket_noi(
+            "Chưa thể tải nhật ký dữ liệu lỗi do kết nối kho dữ liệu gặp sự cố. "
+            "Vui lòng thử lại.",
+            "thu_lai_reject_log",
         )
-        with st.expander("Xem chi tiết kỹ thuật"):
-            st.code(f"{type(e).__name__}: {e}")
 
 st.caption(
     "Mekong Mobile · Dashboard nội bộ · Dữ liệu được làm mới theo bộ nhớ đệm 5 phút."

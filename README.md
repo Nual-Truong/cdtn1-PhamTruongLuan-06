@@ -35,19 +35,19 @@ mục đích học tập.
 Mở terminal tại thư mục gốc của project:
 
 ```bash
-python -m venv .venv
+python -m venv venv
 ```
 
 Kích hoạt môi trường ảo:
 
 ```powershell
 # Windows PowerShell
-.\.venv\Scripts\Activate.ps1
+.\venv\Scripts\Activate.ps1
 ```
 
 ```bash
 # Linux/macOS
-source .venv/bin/activate
+source venv/bin/activate
 ```
 
 Sau đó cài đặt các thư viện:
@@ -67,7 +67,7 @@ Tại thư mục gốc, dùng lệnh tương ứng với terminal đang sử d�
 ### Windows - Command Prompt (CMD)
 
 ```cmd
-python -m venv .venv && .\.venv\Scripts\activate && python -m pip install -r requirements.txt && pytest -q && python -m src.pipeline && streamlit run dashboard/app.py
+python -m venv venv && .\venv\Scripts\activate && python -m pip install -r requirements.txt && pytest -q && python -m src.pipeline && streamlit run dashboard/app.py
 ```
 
 ### Windows - PowerShell
@@ -75,7 +75,7 @@ python -m venv .venv && .\.venv\Scripts\activate && python -m pip install -r req
 PowerShell 5.1 không hỗ trợ toán tử &&. Dùng lệnh sau:
 
 ```powershell
-python -m venv .venv; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; .\.venv\Scripts\Activate.ps1; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; python -m pip install -r requirements.txt; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; pytest -q; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; python -m src.pipeline; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; streamlit run dashboard/app.py
+python -m venv venv; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; .\venv\Scripts\Activate.ps1; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; python -m pip install -r requirements.txt; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; pytest -q; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; python -m src.pipeline; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; streamlit run dashboard/app.py
 ```
 
 Nếu PowerShell chặn kích hoạt môi trường ảo, chạy trước:
@@ -88,7 +88,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 
 > Chỉ chạy lệnh này trong Terminal dùng `bash` hoặc `zsh` trên Linux/macOS.
 > Không chạy trong Windows PowerShell. PowerShell 5.1 không hỗ trợ `&&`,
-> `source` hoặc lệnh kích hoạt môi trường `.venv/bin/activate`.
+> `source` hoặc lệnh kích hoạt môi trường `venv/bin/activate`.
 >
 > Trên Windows, dùng lệnh này trong **Git Bash** hoặc **WSL/Ubuntu** đã cài
 > riêng. Gõ `bash` trong PowerShell không đảm bảo đã chuyển sang Git Bash/WSL;
@@ -97,7 +97,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 Dùng chuỗi lệnh sau để chạy liên tục các bước:
 
 ```bash
-python3 -m venv .venv && source .venv/bin/activate && python3 -m pip install -r requirements.txt && pytest -q && python3 -m src.pipeline && streamlit run dashboard/app.py
+python3 -m venv venv && source venv/bin/activate && python3 -m pip install -r requirements.txt && pytest -q && python3 -m src.pipeline && streamlit run dashboard/app.py
 ```
 
 Các chuỗi lệnh sẽ thực thi lần lượt. Sau khi Streamlit khởi động,
