@@ -1,4 +1,4 @@
-import argparse
+﻿import argparse
 import datetime
 import logging
 import os
@@ -11,8 +11,9 @@ from src.extract.read_sources import (
 )
 from src.transform.clean_customers import lam_sach_khach_hang
 from src.transform.clean_orders import lam_sach_don_hang
-from src.transform.rules import doc_ngay
+from src.transform.rules import doc_ngay, chuan_hoa_dien_thoai
 from src.quality import checks
+from src.quality.three_dimensions import do_day_du, do_chinh_xac, do_nhat_quan, sinh_bao_cao
 from src.load.load_staging import ghi_lo, ghi_reject, ghi_bao_cao
 from src.load.load_warehouse import nap_kho_du_lieu
 
@@ -21,21 +22,47 @@ def khoi_tao_database_tu_sql(engine):
     sql_dir = pathlib.Path("sql")
     if not sql_dir.exists():
         return
-    
-    # Sắp xếp thứ tự chạy các file sql theo tiền tố số
+
     sql_files = sorted(sql_dir.glob("*.sql"))
     with engine.begin() as conn:
         for sql_file in sql_files:
             logging.info(f"Đang thực thi script SQL: {sql_file.name}")
             script = sql_file.read_text(encoding='utf-8')
-            # Chia nhỏ các lệnh theo dấu chấm phẩy (;) nếu có nhiều lệnh trong 1 file
             for statement in script.split(';'):
                 if statement.strip():
                     try:
                         conn.execute(text(statement))
-                    except Exception as e:
-                        # Bỏ qua lỗi nhỏ nếu bảng đã tồn tại khi chạy lại
+                    except Exception:
                         pass
+
+def kiem_dinh_chat_luong_lo(df_cus_tho, df_ord_tho, df_itm_tho):
+    """
+    Thực hiện kiểm định CL1-CL5 trên tập dữ liệu thô đầu vào (Sửa BUG-03:
+    không truyền df đã lọc sạch vào CL1 và CL4 để tránh báo cáo 0 lỗi giả tạo).
+    """
+    df_cus_kiem = df_cus_tho.copy()
+    df_cus_kiem['sdt_chuan'] = df_cus_kiem['so_dien_thoai'].apply(chuan_hoa_dien_thoai)
+
+    df_ord_kiem = df_ord_tho.copy()
+    df_ord_kiem['ngay_chuan'] = df_ord_kiem['ngay'].apply(doc_ngay)
+
+    df_itm_kiem = df_itm_tho.copy()
+    df_itm_kiem['so_luong'] = pd.to_numeric(df_itm_kiem['so_luong'], errors='coerce').fillna(0)
+    df_itm_kiem['don_gia'] = pd.to_numeric(df_itm_kiem['don_gia'], errors='coerce').fillna(0)
+    df_itm_kiem['thanh_tien'] = pd.to_numeric(df_itm_kiem['thanh_tien'], errors='coerce').fillna(0)
+
+    ord_hop_le = df_ord_kiem[
+        df_ord_kiem['ngay_chuan'].notna() &
+        (~df_ord_kiem.duplicated(subset=['ma_cua_hang', 'ma_don'], keep='first'))
+    ]
+
+    return [
+        checks.cl1_dien_thoai_hop_le(df_cus_kiem),
+        checks.cl2_ngay_hop_le(df_ord_kiem),
+        checks.cl3_tien_khop(df_itm_kiem),
+        checks.cl4_khoa_khong_trung(df_ord_kiem),
+        checks.cl5_khoa_ngoai_ton_tai(df_itm_kiem, ord_hop_le)
+    ]
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Mekong Mobile ETL Pipeline')
@@ -93,22 +120,25 @@ def main():
 
     df_reject_all = pd.concat([df_rej_cus, df_rej_ord], ignore_index=True)
 
-    # 3. QUALITY
-    df_ord_kiem = df_ord_tho.copy()
-    df_ord_kiem['ngay_chuan'] = df_ord_kiem['ngay'].apply(doc_ngay)
+    # 3. QUALITY (Kiểm định CL1-CL5 trên dữ liệu thô & Đo 3 chiều chất lượng Track DA)
+    ket_qua = kiem_dinh_chat_luong_lo(df_cus_tho, df_ord_tho, df_itm_tho)
 
-    df_itm_kiem = df_itm_tho.copy()
-    df_itm_kiem['so_luong'] = pd.to_numeric(df_itm_kiem['so_luong'], errors='coerce').fillna(0)
-    df_itm_kiem['don_gia'] = pd.to_numeric(df_itm_kiem['don_gia'], errors='coerce').fillna(0)
-    df_itm_kiem['thanh_tien'] = pd.to_numeric(df_itm_kiem['thanh_tien'], errors='coerce').fillna(0)
+    df_cus_do = df_cus_tho.copy()
+    df_cus_do['sdt_chuan'] = df_cus_do['so_dien_thoai'].apply(chuan_hoa_dien_thoai)
+    df_ord_do = df_ord_tho.copy()
+    df_ord_do['ngay_chuan'] = df_ord_do['ngay'].apply(doc_ngay)
+    df_itm_do = df_itm_tho.copy()
+    df_itm_do['so_luong'] = pd.to_numeric(df_itm_do['so_luong'], errors='coerce').fillna(0)
+    df_itm_do['don_gia'] = pd.to_numeric(df_itm_do['don_gia'], errors='coerce').fillna(0)
+    df_itm_do['thanh_tien'] = pd.to_numeric(df_itm_do['thanh_tien'], errors='coerce').fillna(0)
 
-    ket_qua = [
-        checks.cl1_dien_thoai_hop_le(df_cus_sach),
-        checks.cl2_ngay_hop_le(df_ord_kiem),
-        checks.cl3_tien_khop(df_itm_kiem),
-        checks.cl4_khoa_khong_trung(df_ord_sach),
-        checks.cl5_khoa_ngoai_ton_tai(df_itm_sach, df_ord_sach)
-    ]
+    tat_ca_do_3_chieu = (
+        do_day_du(df_cus_do, 'customers') +
+        do_day_du(df_ord_do, 'orders') +
+        do_chinh_xac(df_itm_do, df_ord_do, df_cus_do) +
+        do_nhat_quan(df_itm_sach, df_ord_sach)
+    )
+    sinh_bao_cao(tat_ca_do_3_chieu, duong_dan='reports/chat-luong.md')
 
     # 4. LOAD STAGING & REJECT
     ghi_lo(df_cus_sach, batch_id, engine, table_name='staging_customers')
