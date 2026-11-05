@@ -16,3 +16,10 @@ Tuy nhiên, để đảm bảo tính tái lập (C5), bảo mật dữ liệu (N
 
 3. **Bổ sung bộ lọc tương tác cho bảng Nhật ký lỗi (`reject_rows` - US5) và đường tham chiếu trung bình (Mục D4):**
    - **Hiện thực BT2:** Bổ sung hộp chọn lọc theo từng mã quy tắc (`CL1` đến `CL5`) tại Khung 5 và thêm đường kẻ ngang tham chiếu mức doanh thu trung bình (Reference Line) trên biểu đồ cột nhằm đáp ứng tiêu chí trực quan hóa D4 của chuyên ngành DA.
+
+## Cập nhật cho Bài tập 3 (Buổi 14 - Kiểm thử hệ thống và Đảm bảo chất lượng)
+
+- **Quyết định xử lý từ phản hồi BT2:**
+  - Đảm bảo toàn bộ test case tự động chạy độc lập bằng lệnh `pytest -q` từ môi trường sạch.
+  - Chuẩn hóa lại cấu trúc 3 chiều chất lượng dữ liệu (Đầy đủ, Chính xác, Nhất quán) và xây dựng bộ kiểm thử phủ kín 5 loại test theo chuẩn Bài tập 3.
+  - Theo dõi và ghi nhận các lỗi phát sinh trong quá trình kiểm thử vào `docs/bug-log.md` kèm commit riêng biệt cho từng bug.
