@@ -90,7 +90,9 @@ def test_TC12_tai_lap_chay_pipeline_hai_lan_khong_nhan_doi(tmp_path):
         'store_id': '1', 'store_code': 'MM001', 'ma_cua_hang': 'MM001',
         'store_name': 'Mekong Q1', 'ten_cua_hang': 'Mekong Q1',
         'province': 'TP.HCM', 'city': 'TP.HCM', 'tinh_thanh': 'TP.HCM', 'thanh_pho': 'TP.HCM',
-        'region': 'Đông Nam Bộ', 'khu_vuc': 'Đông Nam Bộ', 'address': 'Q1', 'dia_chi': 'Q1'
+        'district': 'Quận 1', 'quan_huyen': 'Quận 1',
+        'region': 'Đông Nam Bộ', 'khu_vuc': 'Đông Nam Bộ', 'address': 'Q1', 'dia_chi': 'Q1',
+        'ngay_khai_truong': '2025-01-01', 'open_date': '2025-01-01'
     }])
     df_prd_tho = pd.DataFrame([{
         'product_id': 'P01', 'product_code': 'SP01', 'sku': 'SP01', 'ma_san_pham': 'SP01',
