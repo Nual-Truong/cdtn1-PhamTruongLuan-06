@@ -1,4 +1,4 @@
-import pandas as pd
+﻿import pandas as pd
 from src.transform.rules import doc_ngay, chuan_hoa_dien_thoai, chuan_hoa_ten, khoa_hop_nhat
 
 def lam_sach_don_hang(df_orders_tho, df_items_tho):
@@ -6,8 +6,8 @@ def lam_sach_don_hang(df_orders_tho, df_items_tho):
     HỢP ĐỒNG DỮ LIỆU (Data Contract):
     - Đầu vào: 2 DataFrame thô (orders và order_items) từ pha Extract.
     - Đầu ra: (df_ord_sach, df_itm_sach, df_reject_gop)
-    - Hành vi khi sai: Các dòng sai định dạng ngày (CL2), trùng khóa (CL4), 
-      hoặc lệch thành tiền (CL3) được tách riêng vào df_reject_gop kèm lý do.
+    - Hành vi khi sai: Các dòng sai định dạng ngày (CL2), trùng khóa (CL4),
+      lệch thành tiền (CL3) hoặc mồ côi khóa ngoại order_id (CL5) được tách riêng vào df_reject_gop kèm lý do.
     """
     if df_orders_tho.empty or df_items_tho.empty:
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
@@ -47,17 +47,32 @@ def lam_sach_don_hang(df_orders_tho, df_items_tho):
 
     # Lọc lỗi CL3 (thanh_tien != so_luong * don_gia)
     loi_tien = (itm_df['thanh_tien'] - itm_df['so_luong'] * itm_df['don_gia']).abs() > 1
-    df_itm_sach = itm_df[~loi_tien].copy()
-
     if loi_tien.sum() > 0:
-        rej_i = itm_df[loi_tien].copy()
-        rej_i['ma_quy_tac'] = 'CL3'
-        rej_i['ly_do'] = rej_i.apply(
+        rej_i_cl3 = itm_df[loi_tien].copy()
+        rej_i_cl3['ma_quy_tac'] = 'CL3'
+        rej_i_cl3['ly_do'] = rej_i_cl3.apply(
             lambda r: f"thanh_tien ({r['thanh_tien']}) khac so_luong ({r['so_luong']}) x don_gia ({r['don_gia']})",
             axis=1
         )
-        rej_i['du_lieu_goc'] = rej_i.apply(lambda r: r.to_json(force_ascii=False), axis=1)
-        reject_list.append(rej_i[['ma_quy_tac', 'ly_do', 'du_lieu_goc']])
+        rej_i_cl3['du_lieu_goc'] = rej_i_cl3.apply(lambda r: r.to_json(force_ascii=False), axis=1)
+        reject_list.append(rej_i_cl3[['ma_quy_tac', 'ly_do', 'du_lieu_goc']])
+
+    itm_hop_le_tien = itm_df[~loi_tien].copy()
+
+    # Lọc lỗi CL5 (Mỗi dòng chi tiết hàng hóa phải trỏ về một đơn hàng hợp lệ có thật - Sửa BUG-02)
+    tap_order_hop_le = set(df_ord_sach['order_id'].astype(str))
+    loi_mo_coi = ~itm_hop_le_tien['order_id'].astype(str).isin(tap_order_hop_le)
+    if loi_mo_coi.sum() > 0:
+        rej_i_cl5 = itm_hop_le_tien[loi_mo_coi].copy()
+        rej_i_cl5['ma_quy_tac'] = 'CL5'
+        rej_i_cl5['ly_do'] = rej_i_cl5.apply(
+            lambda r: f"Dong chi tiet don hang co order_id ({r['order_id']}) khong ton tai trong bang orders hop le",
+            axis=1
+        )
+        rej_i_cl5['du_lieu_goc'] = rej_i_cl5.apply(lambda r: r.to_json(force_ascii=False), axis=1)
+        reject_list.append(rej_i_cl5[['ma_quy_tac', 'ly_do', 'du_lieu_goc']])
+
+    df_itm_sach = itm_hop_le_tien[~loi_mo_coi].copy()
 
     df_reject_gop = pd.concat(reject_list, ignore_index=True) if reject_list else pd.DataFrame(columns=['ma_quy_tac', 'ly_do', 'du_lieu_goc'])
     return df_ord_sach, df_itm_sach, df_reject_gop
