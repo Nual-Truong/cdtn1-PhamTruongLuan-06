@@ -1,9 +1,9 @@
 {
     "batch_id": "lo-toan-bo",
-    "thoi_gian": "2026-10-29T17:02:40.358425",
+    "thoi_gian": "2026-11-05T15:42:31.659655",
     "tong_so_dong_vao": 128734,
-    "so_dong_sach": 128100,
-    "so_dong_reject": 634,
+    "so_dong_sach": 127947,
+    "so_dong_reject": 787,
     "chi_tiet_kiem_tra": [
         {
             "ma": "CL1",
@@ -35,7 +35,7 @@
         {
             "ma": "CL4",
             "ten": "Cặp (ma_cua_hang, ma_don) là duy nhất",
-            "so_dong_kiem": 25886,
+            "so_dong_kiem": 26000,
             "so_dong_loi": 0,
             "ti_le_loi": 0.0,
             "nguong_cho_phep": 0.0,
@@ -44,8 +44,8 @@
         {
             "ma": "CL5",
             "ten": "Mỗi dòng hàng trỏ về một đơn hàng có thật",
-            "so_dong_kiem": 35177,
-            "so_dong_loi": 153,
+            "so_dong_kiem": 35697,
+            "so_dong_loi": 154,
             "ti_le_loi": 0.43,
             "nguong_cho_phep": 0.0,
             "ket_luan": "KHÔNG ĐẠT"
