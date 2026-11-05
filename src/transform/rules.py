@@ -1,4 +1,4 @@
-import re
+﻿import re
 import unicodedata
 from datetime import datetime
 
@@ -12,14 +12,14 @@ def chuan_hoa_dien_thoai(raw):
     """
     if raw is None or str(raw).strip() == '':
         return None
-        
+
     # Loại bỏ tất cả các ký tự không phải là số (dấu chấm, khoảng trắng, dấu +)
     digits = re.sub(r'\D', '', str(raw))
-    
+
     # Đổi tiền tố 84 thành 0
     if digits.startswith('84') and len(digits) == 11:
         digits = '0' + digits[2:]
-        
+
     # Kiểm tra xem có đúng 10 số và bắt đầu bằng số 0 không
     if len(digits) == 10 and digits.startswith('0'):
         return digits
@@ -27,16 +27,17 @@ def chuan_hoa_dien_thoai(raw):
 
 def chuan_hoa_ten(raw):
     """
-    Bỏ dấu tiếng Việt, đưa về chữ thường, gộp khoảng trắng dư thừa.
+    Bỏ dấu tiếng Việt (kể cả Đ/đ), đưa về chữ thường, gộp khoảng trắng dư thừa.
     Dùng làm KHÓA TỔNG HỢP để hợp nhất khách hàng trùng lặp.
     """
     if raw is None:
         return ''
-    
-    # Bỏ dấu tiếng Việt
-    s = unicodedata.normalize('NFD', str(raw))
+
+    # Chuyển Đ/đ thành d trước khi chuẩn hóa Unicode NFD (Sửa BUG-01)
+    s = str(raw).replace('đ', 'd').replace('Đ', 'd')
+    s = unicodedata.normalize('NFD', s)
     s = ''.join(c for c in s if unicodedata.category(c) != 'Mn')
-    
+
     # Loại bỏ khoảng trắng dư và chuyển chữ thường
     return re.sub(r'\s+', '', s).strip().lower()
 
@@ -44,6 +45,8 @@ def doc_ngay(raw):
     """
     Thử lần lượt 3 khuôn dạng ngày. Dòng nào không khớp sẽ trả về None để đẩy vào bảng Reject.
     """
+    if raw is None or str(raw).strip() == '':
+        return None
     s = str(raw).strip()
     for fmt in DATE_FORMATS:
         try:
