@@ -5,3 +5,8 @@ __pycache__/
 .env
 data/*.db
 dataset/*.csv
+backup_docker_20261111_165159/
+
+# Python cache
+__pycache__/
+*.py[cod]

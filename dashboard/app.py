@@ -481,7 +481,7 @@ with col_data:
                 batch_id AS "Mã lô nạp",
                 ma_quy_tac AS "Mã lỗi",
                 ly_do AS "Lý do bị loại",
-                du_lieu_goc AS "Dữ liệu gốc (JSON)"
+                du_lieu_goc AS "Thông tin chẩn đoán (metadata)"
             FROM reject_rows
             {dieu_kien_loc}
             ORDER BY batch_id DESC
@@ -492,7 +492,7 @@ with col_data:
         if not df_reject_detail.empty:
             st.warning(
                 f"Đang hiển thị **{len(df_reject_detail)}** bản ghi lỗi. "
-                "Nhân viên nên kiểm tra lý do và dữ liệu gốc trước khi xử lý."
+                "Nhân viên nên kiểm tra mã lỗi và lý do bị loại. Thông tin chẩn đoán không chứa dữ liệu cá nhân gốc."
             )
             st.dataframe(
                 df_reject_detail,

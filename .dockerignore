@@ -1,4 +1,4 @@
-﻿__pycache__/
+__pycache__/
 *.py[cod]
 *$py.class
 .venv/
@@ -10,3 +10,4 @@ ENV/
 data/*.db
 reports/*.log
 .pytest_cache/
+backup_docker_*/

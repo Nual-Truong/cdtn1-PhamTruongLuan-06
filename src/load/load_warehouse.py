@@ -48,14 +48,13 @@ def nap_kho_du_lieu(df_cus_sach, df_ord_sach, df_itm_sach, df_stores, df_product
     dim_customer = pd.DataFrame({
         'customer_key': cus_dedup['customer_key'],
         'khoa_khach_hang': cus_dedup['khoa_khach_hang'].astype(str),
-        'ho_ten': cus_dedup['ho_ten'],
         'sdt': cus_dedup['sdt_masked'],
         'phan_khuc': 'THUONG_XUYEN',
         'hieu_luc_tu': cus_dedup['ngay_tao'],
         'hieu_luc_den': '9999-12-31',
         'la_ban_ghi_hien_tai': 1
     })
-    unknown_cus = pd.DataFrame([{'customer_key': -1, 'khoa_khach_hang': 'UNKNOWN', 'ho_ten': 'Khách vãng lai / Không rõ', 'sdt': 'UNKNOWN', 'phan_khuc': 'UNKNOWN', 'hieu_luc_tu': '1970-01-01', 'hieu_luc_den': '9999-12-31', 'la_ban_ghi_hien_tai': 1}])
+    unknown_cus = pd.DataFrame([{'customer_key': -1, 'khoa_khach_hang': 'UNKNOWN', 'sdt': 'UNKNOWN', 'phan_khuc': 'UNKNOWN', 'hieu_luc_tu': '1970-01-01', 'hieu_luc_den': '9999-12-31', 'la_ban_ghi_hien_tai': 1}])
     dim_customer = pd.concat([unknown_cus, dim_customer], ignore_index=True)
 
     # 5. Bảng fact_sales (BẢO ĐẢM KHÓA NGÀY KHỚP 100% VỚI DIM_DATE)
