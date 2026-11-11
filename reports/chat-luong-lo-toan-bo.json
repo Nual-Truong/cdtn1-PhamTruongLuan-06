@@ -1,9 +1,9 @@
 {
     "batch_id": "lo-toan-bo",
-    "thoi_gian": "2026-11-05T16:20:27.788499",
+    "thoi_gian": "2026-11-11T16:28:38.338325",
     "tong_so_dong_vao": 128734,
-    "so_dong_sach": 127947,
-    "so_dong_reject": 787,
+    "so_dong_sach": 123814,
+    "so_dong_reject": 4920,
     "chi_tiet_kiem_tra": [
         {
             "ma": "CL1",

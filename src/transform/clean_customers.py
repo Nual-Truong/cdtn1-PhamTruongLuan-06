@@ -1,42 +1,40 @@
-import pandas as pd
-from src.transform.rules import chuan_hoa_dien_thoai, chuan_hoa_ten, khoa_hop_nhat
+﻿import pandas as pd
+from src.transform.rules import chuan_hoa_dien_thoai, chuan_hoa_ten
+from src.transform.gia_danh import gia_danh
+
+def che_so_dien_thoai(sdt):
+    """Data Masking (NFR03): Che 4 số cuối của SĐT chuẩn 10 số."""
+    if not sdt or len(str(sdt)) != 10:
+        return None
+    return str(sdt)[:6] + '****'
 
 def lam_sach_khach_hang(df_tho):
     """
-    Nhận DataFrame khách hàng thô.
-    Trả về 2 DataFrame: sach (dữ liệu hợp lệ) và reject (dữ liệu lỗi).
-    Tuyệt đối không thao tác với CSDL ở đây.
+    HỢP ĐỒNG DỮ LIỆU (Data Contract):
+    - Đầu vào: DataFrame khách hàng thô từ pha Extract.
+    - Đầu ra: (df_sach, df_reject)
+      df_sach gồm sdt_chuan, ten_chuan, khoa_khach_hang, sdt_che, ma_khach_gia_danh.
     """
     if df_tho.empty:
         return pd.DataFrame(), pd.DataFrame()
-        
+
     df = df_tho.copy()
-    
-    # 1. Áp dụng các quy tắc chuẩn hóa
     df['sdt_chuan'] = df['so_dien_thoai'].apply(chuan_hoa_dien_thoai)
     df['ten_chuan'] = df['ho_ten'].apply(chuan_hoa_ten)
-    
-    # 2. Tạo khóa tổng hợp để phát hiện trùng lặp (ví dụ: gộp Nguyễn Văn A và Nguyen Van A)
-    # Cũ: 
 
-    df['khoa_khach_hang'] = df.apply(lambda row: f"{khoa_hop_nhat(row['ho_ten'], row['so_dien_thoai'])[0]}_{khoa_hop_nhat(row['ho_ten'], row['so_dien_thoai'])[1]}", axis=1)
-    
-    # 3. Định nghĩa quy tắc lọc (CL1: Số điện thoại phải chuẩn hóa được)
-    # Lỗi nếu SĐT gốc có chứa ký tự nhưng hàm chuẩn hóa trả về None
-    reject_mask = df['sdt_chuan'].isna() & df['so_dien_thoai'].notna() & (df['so_dien_thoai'].astype(str).str.strip() != '')
-    
-    # Tách dữ liệu sạch
-    df_sach = df[~reject_mask].copy()
-    
-    # 3. Tạo cấu trúc cho bảng Reject (chỉ lấy các dòng bị lỗi)
-    df_reject = pd.DataFrame()
-    if reject_mask.sum() > 0:
-        df_reject = df[reject_mask].copy()
-        df_reject['ma_quy_tac'] = 'CL1'
-        df_reject['ly_do'] = 'Số điện thoại sai định dạng, không thể chuẩn hóa thành chuẩn 10 số.'
-        # Lưu toàn bộ dòng gốc nguyên bản dưới dạng JSON để truy vết
-        df_reject['du_lieu_goc'] = df_reject.apply(lambda row: row.to_json(force_ascii=False), axis=1)
-        # Chỉ giữ lại các cột cần thiết cho bảng reject_rows trong CSDL
-        df_reject = df_reject[['ma_quy_tac', 'ly_do', 'du_lieu_goc']]
+    mask_loi = df['sdt_chuan'].isna()
+    df_sach = df[~mask_loi].copy()
+    df_sach['khoa_khach_hang'] = df_sach['sdt_chuan'] + '_' + df_sach['ten_chuan']
+    df_sach['sdt_che'] = df_sach['sdt_chuan'].apply(che_so_dien_thoai)
+    df_sach['ma_khach_gia_danh'] = df_sach['sdt_chuan'].apply(gia_danh)
+
+    if mask_loi.sum() > 0:
+        df_rej = df[mask_loi].copy()
+        df_rej['ma_quy_tac'] = 'CL1'
+        df_rej['ly_do'] = 'Số điện thoại không hợp lệ hoặc để trống'
+        df_rej['du_lieu_goc'] = df_rej.apply(lambda r: r.to_json(force_ascii=False), axis=1)
+        df_reject = df_rej[['ma_quy_tac', 'ly_do', 'du_lieu_goc']]
+    else:
+        df_reject = pd.DataFrame(columns=['ma_quy_tac', 'ly_do', 'du_lieu_goc'])
 
     return df_sach, df_reject

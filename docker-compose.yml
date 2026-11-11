@@ -1,0 +1,23 @@
+﻿services:
+  pipeline:
+    build: .
+    container_name: mekong_da_pipeline
+    env_file: .env
+    environment:
+      - DWH_URL=${DWH_URL:-sqlite:///data/mekong_dw.db}
+      - DATA_DIR=${DATA_DIR:-dataset}
+      - PSEUDO_KEY=${PSEUDO_KEY:-mekong-mobile-hmac-secret-key-2026-min-32-bytes}
+    ports:
+      - "${APP_PORT:-8501}:8501"
+    volumes:
+      - dwh_data:/app/data
+      - ./reports:/app/reports
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, os; assert os.path.exists('reports/chat-luong.md'); urllib.request.urlopen('http://localhost:8501/chat-luong.md')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+volumes:
+  dwh_data:
