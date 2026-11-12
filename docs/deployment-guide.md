@@ -1,16 +1,106 @@
-# HƯỚNG DẪN TRIỂN KHAI VÀ HẸN LỊCH CHẠY PIPELINE (DEPLOYMENT GUIDE)
+# H??NG D?N TRI?N KHAI V? H?N L?CH CH?Y PIPELINE
+## Smart CRM Mekong Mobile ? Flow L6, Track DA
 
-## 1. Chạy Pipeline theo tham số ngày và Chạy bù (Backfill)
+## 1. Y?u c?u m?i tr??ng
 
-Pipeline hỗ trợ tham số khoảng ngày và đảm bảo tính chất **chạy lại được (idempotent)**:
+- Windows 10/11, macOS ho?c Linux.
+- Docker Engine v? Docker Compose v2.
+- Git ?? l?y m? ngu?n.
+- C?ng 8501 c?n ???c m? tr?n m?y ch?, ho?c c?u h?nh APP_PORT trong `.env`.
+- Dung l??ng l?u tr? ?? cho d? li?u CSV, SQLite DWH, log v? b?o c?o.
 
-- Chạy toàn bộ dữ liệu: `python -m src.pipeline`
-- Chạy theo khoảng ngày cụ thể: `python -m src.pipeline --tu-ngay 2026-06-01 --den-ngay 2026-06-30`
-- Khi một lần chạy thất bại, thực hiện chạy bù bằng cách gọi lại đúng khoảng ngày đó mà không gây nhân đôi bản ghi.
+Ki?m tra Docker Compose:
 
-## 2. Cấu hình hẹn lịch chạy tự động ban đêm (Batch Processing theo NFR02)
+```bash
+docker compose version
+```
 
-- **Trên Linux / macOS (Crontab):** Chạy lúc 02:00 sáng hàng ngày:
-  ```cron
-  0 2 * * * cd /duong-dan/Chuyen_de_1 && ./venv/bin/python -m src.pipeline >> reports/cron.log 2>&1
-  ```
+## 2. L?y m? ngu?n v? c?u h?nh m?i tr??ng
+
+Clone repository:
+
+```bash
+git clone https://github.com/Nual-Truong/cdtn1-PhamTruongLuan-06.git
+cd cdtn1-PhamTruongLuan-06
+git checkout v1.0
+```
+
+T?o file `.env` t? `.env.example`, sau ?? c?u h?nh:
+
+- `PSEUDO_KEY`: kh?a b? m?t t?i thi?u 32 byte.
+- `DWH_URL`: ???ng d?n SQLite Data Warehouse.
+- `DATA_DIR`: th? m?c d? li?u ngu?n.
+- `APP_PORT`: c?ng truy c?p Dashboard.
+
+Kh?ng commit `.env` ho?c chia s? kh?a b? m?t l?n Git.
+
+## 3. Kh?i ch?y h? th?ng v? Pipeline
+
+Build v? kh?i ch?y d?ch v?:
+
+```bash
+docker compose up -d --build
+```
+
+Ki?m tra tr?ng th?i:
+
+```bash
+docker compose ps
+```
+
+Theo d?i log:
+
+```bash
+docker compose logs -f pipeline
+```
+
+Truy c?p Dashboard t?i:
+
+`http://localhost:8501`
+
+Ch?y pipeline trong container ?ang ho?t ??ng:
+
+```bash
+docker compose exec -T pipeline python -m src.pipeline
+```
+
+Ch?y theo kho?ng ng?y:
+
+```bash
+docker compose exec -T pipeline python -m src.pipeline --tu-ngay 2026-06-01 --den-ngay 2026-06-30
+```
+
+## 4. L?p l?ch ch?y t? ??ng
+
+C? th? s? d?ng Windows Task Scheduler ho?c cron tr?n Linux ?? g?i l?nh ch?y pipeline theo l?ch.
+
+V? d? l?nh ch?y trong container:
+
+```bash
+docker compose exec -T pipeline python -m src.pipeline
+```
+
+N?u d?ng Task Scheduler, c?u h?nh:
+
+- Program: `docker.exe`
+- Arguments: `compose exec -T pipeline python -m src.pipeline`
+- Start in: th? m?c ch?a `docker-compose.yml`
+- Trigger: h?ng ng?y l?c 02:00.
+
+??m b?o Docker v? container pipeline ?? kh?i ??ng tr??c th?i ?i?m ch?y.
+
+NFR02 quy ??nh th?i gian n?p d? li?u ban ??m kh?ng v??t qu? 2 gi?. C?n theo d?i th?i gian ch?y th?c t? ?? x?c nh?n m?c ??p ?ng.
+
+## 5. Gi?m s?t, sao l?u v? x? l? s? c?
+
+- Ki?m tra tr?ng th?i container b?ng `docker compose ps`.
+- Theo d?i log b?ng `docker compose logs --tail=200 pipeline`.
+- Ki?m tra c?c b?o c?o trong th? m?c `reports/`.
+- D? li?u SQLite ???c l?u trong Docker named volume `dwh_data`.
+- Th? m?c `reports/` ???c ?nh x? ra m?y ch? ?? l?u b?o c?o v? log.
+- Sao l?u volume v? th? m?c b?o c?o ??nh k? tr??c c?c thay ??i l?n.
+
+Khi pipeline th?t b?i, ki?m tra log v? nguy?n nh?n tr??c khi ch?y l?i. Vi?c ch?y l?i c?ng kho?ng ng?y kh?ng ???c m?c ??nh l? idempotent n?u ch?a x?c minh c? ch? ghi d? li?u v? kh?a nghi?p v?.
+
+Kh?ng x?a Docker volume khi x? l? s? c? n?u ch?a sao l?u v? ch?a ???c ph?p.
+

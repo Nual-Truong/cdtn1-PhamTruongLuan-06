@@ -290,3 +290,13 @@
 2026-11-11 16:28:39,997 [INFO] Staging & Reject: Đã lưu 4920 dòng lỗi vào reject_rows.
 2026-11-11 16:28:39,997 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 51284, 'fact_sales': 34973}
 2026-11-11 16:28:39,997 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
+2026-11-12 15:40:35,494 [INFO] === Bắt đầu chạy Pipeline ETL - Mã lô: lo-toan-bo ===
+2026-11-12 15:40:35,631 [INFO] Đang thực thi script SQL: 001_staging.sql
+2026-11-12 15:40:35,665 [INFO] Đang thực thi script SQL: 002_reject.sql
+2026-11-12 15:40:35,688 [INFO] Đang thực thi script SQL: 010_dim.sql
+2026-11-12 15:40:35,696 [INFO] Đang thực thi script SQL: 020_fact.sql
+2026-11-12 15:40:35,737 [INFO] Đang thực thi script SQL: 030_view_phan_tich.sql
+2026-11-12 15:40:35,757 [INFO] Đang thực thi script SQL: 040_quyen_truy_cap.sql
+2026-11-12 15:40:42,056 [INFO] Staging & Reject: Đã lưu 4920 dòng lỗi vào reject_rows.
+2026-11-12 15:40:42,057 [INFO] Kho dữ liệu Star Schema đã nạp thành công: {'dim_store': 25, 'dim_product': 321, 'dim_date': 793, 'dim_customer': 51284, 'fact_sales': 34973}
+2026-11-12 15:40:42,057 [INFO] === Hoàn tất Pipeline! Báo cáo và log lưu tại thư mục reports/ ===
